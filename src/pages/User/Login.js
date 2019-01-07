@@ -21,33 +21,28 @@ export function getUUID () {
   login,
   submitting: loading.effects['login/login'],
 }))
-class LoginPage extends Component {
+class LoginPage extends React.Component {
+  constructor(props){
+    super(props)
+    this.onGetCaptcha();
+  }
   state = {
     type: 'account',
     autoLogin: true,
-    token:getUUID(),
   };
+
 
   onTabChange = type => {
     this.setState({ type });
   };
 
-  onGetCaptcha = () =>
-    new Promise((resolve, reject) => {
-      this.loginForm.validateFields(['mobile'], {}, (err, values) => {
-        if (err) {
-          reject(err);
-        } else {
-          const { dispatch } = this.props;
-          dispatch({
-            type: 'login/getCaptcha',
-            payload: values.mobile,
-          })
-            .then(resolve)
-            .catch(reject);
-        }
-      });
-    });
+  onGetCaptcha = () =>{
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'login/getCaptcha',
+      payload:getUUID() ,
+    })};
+
 
   handleSubmit = (err, values) => {
     const { type } = this.state;
@@ -57,11 +52,11 @@ class LoginPage extends Component {
         type: 'login/login',
         payload: {
           ...values,
-          type,
-          token:this.state.token
+          't':1546592086848,
+          'uuid':getUUID(),
         },
       });
-      sessionStorage.setItem('token',this.state.token);
+      sessionStorage.setItem('token',1546592086848);
     }
   };
 
@@ -90,11 +85,10 @@ class LoginPage extends Component {
         >
           <Tab key="account" tab={formatMessage({ id: 'app.login.tab-login-credentials' })}>
             {login.status === 'error' &&
-              login.type === 'account' &&
               !submitting &&
               this.renderMessage(formatMessage({ id: 'app.login.message-invalid-credentials' }))}
             <UserName
-              name="userName"
+              name="username"
               placeholder={`${formatMessage({ id: 'app.login.userName' })}`}
               rules={[
                 {
@@ -114,6 +108,7 @@ class LoginPage extends Component {
               ]}
               onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
             />
+            
           </Tab>
               {/* 手机号登录 */}
           {/* <Tab key="mobile" tab={formatMessage({ id: 'app.login.tab-login-mobile' })}>

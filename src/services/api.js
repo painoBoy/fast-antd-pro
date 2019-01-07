@@ -102,9 +102,16 @@ export async function updateFakeList(params) {
     },
   });
 }
-
+//获取图片验证码
+export async function getFakeCaptcha(params) {
+  return request('/api/captcha.jpg', {
+    method: 'GET',
+    body: params,
+  });
+}
+//登陆请求
 export async function fakeAccountLogin(params) {
-  return request('/api/login/account', {
+  return request('/api/sys/login', {
     method: 'POST',
     body: params,
   });
@@ -121,6 +128,3 @@ export async function queryNotices() {
   return request('/api/notices');
 }
 
-export async function getFakeCaptcha(mobile) {
-  return request(`/api/captcha?mobile=${mobile}`);
-}

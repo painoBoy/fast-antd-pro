@@ -70,8 +70,9 @@ export default {
   externals: {
     '@antv/data-set': 'DataSet',
   },
+  //代理请求服务器地址
   proxy: {
-    '': {
+    '/api': {
       target: 'http://192.168.50.137:8089/cneiu-fk/',
       changeOrigin: true,
       // pathRewrite: { '^/server': '' },

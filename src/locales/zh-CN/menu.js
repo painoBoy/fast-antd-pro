@@ -5,6 +5,7 @@ export default {
   'menu.apManage': '资质管理',
   'menu.goodsManage': '物品管理',
   'menu.msgCenter': '消息中心', 
+  'menu.workplace': '工作台', 
   'menu.dashboard': 'Dashboard',
   'menu.dashboard.analysis': '分析页',
   'menu.dashboard.monitor': '监控页',

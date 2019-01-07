@@ -29,9 +29,14 @@ export default [
     authority: ['admin', 'user'],
     routes: [
       // dashboard
-      {
+       {
         path: '/',
-        redirect: '/MyOrder/MyOrder'
+        redirect: '/Dashboard/Workplace'
+      },
+      {
+        path: '/dashboard/workplace',
+        name:'workplace',
+        component:'/Dashboard/Workplace'
       },
       {
         path: '/MyOrder/MyOrder',

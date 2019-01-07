@@ -23,6 +23,7 @@ const codeMessage = {
 };
 
 const checkStatus = response => {
+  console.log(response);
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
@@ -135,12 +136,11 @@ export default function request(url, option) {
    * Produce fingerprints based on url and parameters
    * Maybe url has the same parameters
    */
-  const token = sessionStorage.getItem('token');
-  const tokenString = token ? token :'';
+  const tokenInfo = sessionStorage.getItem('token') ?sessionStorage.getItem('token') : null;
   const defaultOptions = {
     credentials: 'include',
     headers: {
-      Authorization: tokenString,
+      token: tokenInfo,
     }
   };
   const newOptions = { ...defaultOptions, ...options };
@@ -157,6 +157,7 @@ export default function request(url, option) {
       };
       newOptions.body = JSON.stringify(newOptions.body);
     } else {
+      alert(3);
       // newOptions.body is FormData
       newOptions.headers = {
         Accept: 'application/json',
@@ -170,7 +171,7 @@ export default function request(url, option) {
     .then(response => {
       
       const optionses = { ...defaultOptions,...newOptions };
-      if(token){
+      if(tokenInfo){
         optionses.headers={
           Accept: 'application/json',
           'Content-Type': 'application/json; charset=utf-8',

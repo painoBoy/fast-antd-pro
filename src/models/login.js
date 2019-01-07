@@ -9,17 +9,16 @@ export default {
   namespace: 'login',
 
   state: {
-    status: undefined,
+    status: '',
   },
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
+      const response = yield call(fakeAccountLogin, JSON.stringify(payload));
       yield put({
         type: 'changeLoginStatus',
         payload: response,
       });
-      console.log(JSON.stringify(response));
       // Login successfully
       if (response.status === 'ok') {
         reloadAuthorized();
@@ -43,7 +42,7 @@ export default {
         yield put(routerRedux.replace(redirect || '/'));
       }
     },
-
+    //图片验证码
     *getCaptcha({ payload }, { call }) {
       yield call(getFakeCaptcha, payload);
     },
