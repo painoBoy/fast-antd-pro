@@ -63,6 +63,9 @@ class BasicLayout extends React.PureComponent {
       route: { routes, authority },
     } = this.props;
     dispatch({
+      type: 'user/querySupplierInfo',
+    });
+    dispatch({
       type: 'user/fetchCurrent',
     });
     dispatch({
@@ -116,14 +119,14 @@ class BasicLayout extends React.PureComponent {
     const currRouterData = this.matchParamsPath(pathname, breadcrumbNameMap);
 
     if (!currRouterData) {
-      return 'Ant Design Pro';
+      return '供应链协同平台';
     }
     const pageName = formatMessage({
       id: currRouterData.locale || currRouterData.name,
       defaultMessage: currRouterData.name,
     });
 
-    return `${pageName} - Ant Design Pro`;
+    return `${pageName} - 供应链协同平台`;
   };
 
   getLayoutStyle = () => {

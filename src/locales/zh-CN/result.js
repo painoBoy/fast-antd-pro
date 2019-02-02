@@ -9,7 +9,7 @@ export default {
   'app.result.error.btn-text': '返回修改',
   'app.result.success.title': '提交成功',
   'app.result.success.description':
-    '提交结果页用于反馈一系列操作任务的处理结果， 如果仅是简单操作，使用 Message 全局提示反馈即可。 本文字区域可以展示简单的补充说明，如果有类似展示 “单据”的需求，下面这个灰色区域可以呈现比较复杂的内容。',
+    '确认订单成功，该订单状态更新为已确认待发货状态。',
   'app.result.success.operate-title': '项目名称',
   'app.result.success.operate-id': '项目 ID：',
   'app.result.success.principal': '负责人：',
@@ -24,4 +24,6 @@ export default {
   'app.result.success.btn-return': '返回列表',
   'app.result.success.btn-project': '查看项目',
   'app.result.success.btn-print': '打印',
+  'app.result.success.btn-goSend': '立即发货',
+
 };

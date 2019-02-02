@@ -3,6 +3,8 @@ import { Table, Button, Input, message, Popconfirm, Divider } from 'antd';
 import isEqual from 'lodash/isEqual';
 import styles from './style.less';
 
+
+
 class TableForm extends PureComponent {
   index = 0;
 
@@ -136,7 +138,7 @@ class TableForm extends PureComponent {
   render() {
     const columns = [
       {
-        title: '成员姓名',
+        title: '资料名称',
         dataIndex: 'name',
         key: 'name',
         width: '20%',
@@ -148,7 +150,7 @@ class TableForm extends PureComponent {
                 autoFocus
                 onChange={e => this.handleFieldChange(e, 'name', record.key)}
                 onKeyPress={e => this.handleKeyPress(e, record.key)}
-                placeholder="成员姓名"
+                placeholder="资料名称"
               />
             );
           }
@@ -156,7 +158,7 @@ class TableForm extends PureComponent {
         },
       },
       {
-        title: '工号',
+        title: '上传照片',
         dataIndex: 'workId',
         key: 'workId',
         width: '20%',
@@ -167,26 +169,7 @@ class TableForm extends PureComponent {
                 value={text}
                 onChange={e => this.handleFieldChange(e, 'workId', record.key)}
                 onKeyPress={e => this.handleKeyPress(e, record.key)}
-                placeholder="工号"
-              />
-            );
-          }
-          return text;
-        },
-      },
-      {
-        title: '所属部门',
-        dataIndex: 'department',
-        key: 'department',
-        width: '40%',
-        render: (text, record) => {
-          if (record.editable) {
-            return (
-              <Input
-                value={text}
-                onChange={e => this.handleFieldChange(e, 'department', record.key)}
-                onKeyPress={e => this.handleKeyPress(e, record.key)}
-                placeholder="所属部门"
+                placeholder="照片"
               />
             );
           }
@@ -251,7 +234,7 @@ class TableForm extends PureComponent {
           onClick={this.newMember}
           icon="plus"
         >
-          新增成员
+          新增
         </Button>
       </Fragment>
     );

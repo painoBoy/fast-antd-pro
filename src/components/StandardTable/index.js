@@ -1,6 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Table, Alert } from 'antd';
 import styles from './index.less';
+import { relative } from 'path';
 
 function initTotalList(columns) {
   const totalList = [];
@@ -52,6 +53,7 @@ class StandardTable extends PureComponent {
 
   handleTableChange = (pagination, filters, sorter) => {
     const { onChange } = this.props;
+
     if (onChange) {
       onChange(pagination, filters, sorter);
     }
@@ -64,12 +66,22 @@ class StandardTable extends PureComponent {
   render() {
     const { selectedRowKeys, needTotalList } = this.state;
     const { data = {}, rowKey, ...rest } = this.props;
-    const { list = [], pagination } = data;
+    const { list = [] } = data;
+    const pagination = {
+      pageSize:data.pageSize,
+      current:data.currPage,
+      total:data.totalCount
+    };
 
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      ...pagination,
+      pageSize:data.pageSize,
+      current:data.currPage,
+      total:data.totalCount,
+      showTotal: function () {  //设置显示一共几条数据
+        return <span style={{position:'absolute',left:0,fontSize:13}}>{'共 ' + data.totalCount + ' 条记录 第'+data.currPage+'/'+data.totalPage+' 页'} </span>; 
+    }
     };
 
     const rowSelection = {
@@ -83,7 +95,7 @@ class StandardTable extends PureComponent {
     return (
       <div className={styles.standardTable}>
         <div className={styles.tableAlert}>
-          <Alert
+          {/* <Alert
             message={
               <Fragment>
                 已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
@@ -103,9 +115,9 @@ class StandardTable extends PureComponent {
             }
             type="info"
             showIcon
-          />
+          /> */}
         </div>
-        <Table
+        <Table id="printTable"
           rowKey={rowKey || 'key'}
           rowSelection={rowSelection}
           dataSource={list}

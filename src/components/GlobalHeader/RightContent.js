@@ -65,6 +65,7 @@ export default class GlobalHeaderRight extends PureComponent {
 
   render() {
     const {
+      supplierInfo,
       currentUser,
       fetchingNotices,
       onNoticeVisibleChange,
@@ -72,6 +73,7 @@ export default class GlobalHeaderRight extends PureComponent {
       onNoticeClear,
       theme,
     } = this.props;
+    
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
         <Menu.Item key="userCenter">
@@ -167,7 +169,7 @@ export default class GlobalHeaderRight extends PureComponent {
             emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
           />
         </NoticeIcon> */}
-        {currentUser.name ? (
+        {supplierInfo.supplierName ? (
           <HeaderDropdown overlay={menu}>
             <span className={`${styles.action} ${styles.account}`}>
               <Avatar
@@ -176,7 +178,7 @@ export default class GlobalHeaderRight extends PureComponent {
                 src={currentUser.avatar}
                 alt="avatar"
               />
-              <span className={styles.name}>{currentUser.name}</span>
+              <span className={styles.name}>{supplierInfo.supplierName}</span>
             </span>
           </HeaderDropdown>
         ) : (

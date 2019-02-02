@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import styles from './index.less';
+import { Icon} from 'antd';
 
 const GlobalFooter = ({ className, links, copyright }) => {
   const clsString = classNames(styles.globalFooter, className);
@@ -20,7 +21,7 @@ const GlobalFooter = ({ className, links, copyright }) => {
           ))}
         </div>
       )} */}
-      {copyright && <div className={styles.copyright}>2018 这里科技体验技术部出品</div>}
+      {copyright && <div className={styles.copyright}> Copyright <Icon type="copyright" /> 2018 这里科技体验技术部出品</div>}
     </footer>
   );
 };

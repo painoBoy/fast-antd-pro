@@ -17,7 +17,7 @@ export default class TopNavHeader extends PureComponent {
   }
 
   render() {
-    const { theme, contentWidth, menuData, logo } = this.props;
+    const { theme, contentWidth, menuData, logo  } = this.props;
     const { maxWidth } = this.state;
     const flatMenuKeys = getFlatMenuKeys(menuData);
     return (

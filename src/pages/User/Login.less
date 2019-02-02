@@ -1,8 +1,14 @@
+
 @import '~antd/lib/style/themes/default.less';
 
 .main {
+  .tabs{
+    text-align: center;
+    border-bottom: 0;
+    margin-bottom: 24px;
+  }
   width: 368px;
-  margin: 0 auto;
+  margin: 80px auto;
   @media screen and (max-width: @screen-sm) {
     width: 95%;
   }
@@ -19,7 +25,10 @@
       color: @primary-color;
     }
   }
+  .forgotpwd{
+    float: right;
 
+  }
   .other {
     text-align: left;
     margin-top: 24px;

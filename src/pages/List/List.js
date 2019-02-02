@@ -49,7 +49,7 @@ class SearchList extends Component {
         <Input.Search
           placeholder="请输入"
           enterButton="搜索"
-          size="large"
+          // size=""
           onSearch={this.handleFormSubmit}
           style={{ width: 522 }}
         />
@@ -57,7 +57,7 @@ class SearchList extends Component {
     );
 
     const { match, children, location } = this.props;
-
+    alert(location.pathname.replace(`${match.path}/`, ''));
     return (
       <PageHeaderWrapper
         title="搜索列表"

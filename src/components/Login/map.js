@@ -32,6 +32,21 @@ export default {
       },
     ],
   },
+  CaptPic:{
+    props: {
+      size: 'large',
+      prefix: <Icon type="mail" className={styles.prefixIcon} />,
+      type: 'captpic',
+      id: 'captpic',
+      placeholder: '888888',
+    },
+    rules: [
+      {
+        required: true,
+        message: 'Please enter Captcha!',
+      },
+    ],
+  },
   Mobile: {
     props: {
       size: 'large',

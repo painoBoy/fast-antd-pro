@@ -52,12 +52,13 @@ if (process.env.APP_TYPE === 'site') {
 }
 
 export default {
+  hash:true, //hash模式
   // add for transfer to umi
   plugins,
   define: {
     APP_TYPE: process.env.APP_TYPE || '',
   },
-  targets: {
+  targets: { //兼容ie11
     ie: 11,
   },
   // 路由配置
@@ -72,8 +73,8 @@ export default {
   },
   //代理请求服务器地址
   proxy: {
-    '/api': {
-      target: 'http://192.168.50.137:8089/cneiu-fk/',
+    '/cneiu-fk/': {
+      target: 'http://192.168.50.131:8089',
       changeOrigin: true,
       // pathRewrite: { '^/server': '' },
     },

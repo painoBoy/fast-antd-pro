@@ -1,6 +1,8 @@
+import { func } from "prop-types";
+
 // use localStorage to store the authority info, which might be sent from server in actual project.
 export function getAuthority(str) {
-  return localStorage.getItem('antd-pro-authority') || 'guest';
+  // return localStorage.getItem('antd-pro-authority') || ['guest'];
   const authorityString =
     typeof str === 'undefined' ? localStorage.getItem('antd-pro-authority') : str;
   // authorityString could be admin, "admin", ["admin"]
@@ -18,5 +20,14 @@ export function getAuthority(str) {
 
 export function setAuthority(authority) {
   const proAuthority = typeof authority === 'string' ? [authority] : authority;
-  return localStorage.setItem('antd-pro-authority',authority);
+  return localStorage.setItem('antd-pro-authority', JSON.stringify(proAuthority));
+}
+
+export function getToken(){
+  const Authorization = sessionStorage.getItem('token');
+  return Authorization;
+}
+
+export function setToken(token){
+  return sessionStorage.setItem('token',JSON.stringify(token));
 }

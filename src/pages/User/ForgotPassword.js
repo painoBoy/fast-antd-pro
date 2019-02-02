@@ -34,32 +34,50 @@ const passwordProgressMap = {
   poor: 'exception',
 };
 
-@connect(({ register, loading }) => ({
-  register,
-  submitting: loading.effects['register/submit'],
+@connect(({ resetpassword, loading }) => ({
+  resetpassword,
+  submitting: loading.effects['resetpassword/reSet'],
 }))
 @Form.create()
-class Register extends Component {
+class ForgotPassword extends Component {
   state = {
     count: 0,
     confirmDirty: false,
     visible: false,
     help: '',
+    prefix: '86',
   };
 
-  componentDidUpdate() {
-    const { form, register } = this.props;
-    const account = form.getFieldValue('account');
-   
-    // if (register.status === 'ok') {
-    //   router.push({
-    //     pathname: '/user/register-result',
-    //     state: {
-    //       account,
-    //     },
-    //   });
-    // }
+  // componentDidUpdate() {
+  //   const { form, register } = this.props;
+  //   // const account = form.getFieldValue('account');
+  // }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
+
+  //获取邮箱验证码
+  onGetCaptcha = () => {
+    const { form ,dispatch,resetpassword} = this.props;
+    const value =  form.getFieldValue('account');
+
+    dispatch({ 
+      type: 'resetpassword/getCode',
+      payload: {
+        accountId:value
+      },
+    })
+    let count = 59;
+    this.setState({ count });
+    this.interval = setInterval(() => {
+      count -= 1;
+      this.setState({ count });
+      if (count === 0) {
+        clearInterval(this.interval);
+      }
+    }, 1000);
+  };
 
   getPasswordStatus = () => {
     const { form } = this.props;
@@ -73,45 +91,19 @@ class Register extends Component {
     return 'poor';
   };
 
-  //校验邮箱是否有效
-  checkEmailAdress = ()=>{
-    const { dispatch ,form} = this.props;
-    const accountId = form.getFieldValue('account');
-    if(accountId){
-      dispatch({
-        type:'register/checkEmail',
-        payload:{
-          accountId,
-        }
-      })
-    }    
-  }
-
-  //校验登录账户是否存在
-  checkLoginName = ()=>{
-    const { dispatch ,form} = this.props;
-    const loginName = form.getFieldValue('loginName');
-    if(loginName){
-      dispatch({
-        type:'register/checkLoginName',
-        payload:{
-          loginName,
-        }
-      })
-    }  
-  }
-
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     const { form, dispatch } = this.props;
     form.validateFields({ force: true }, (err, values) => {
       if (!err) {
+        console.log(values);
+        const { prefix } = this.state;
         dispatch({
-          type: 'register/submit',
+          type: 'resetpassword/reSet',
           payload: {
             ...values,
           },
-        });
+        })
       }
     });
   };
@@ -160,6 +152,12 @@ class Register extends Component {
     }
   };
 
+  changePrefix = value => {
+    this.setState({
+      prefix: value,
+    });
+  };
+
   renderPasswordProgress = () => {
     const { form } = this.props;
     const value = form.getFieldValue('passWord');
@@ -178,13 +176,13 @@ class Register extends Component {
   };
 
   render() {
-    const { form, submitting} = this.props;
+    const { form, submitting } = this.props;
     const { getFieldDecorator } = form;
-    const { count, help, visible } = this.state;
+    const { count, prefix, help, visible } = this.state;
     return (
       <div className={styles.main}>
         <h3>
-          <FormattedMessage id="app.register.register" /> 
+          <FormattedMessage id="app.forgot.recover-password" /> 
         </h3>
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
@@ -200,38 +198,7 @@ class Register extends Component {
                 },
               ],
             })(
-              <Input size="large" onBlur={this.checkEmailAdress} placeholder={formatMessage({ id: 'form.email.placeholder' })} />
-            )}
-          </FormItem>
-          <FormItem>
-            <Row gutter={8}>
-              <Col span={24}>
-                {getFieldDecorator('activeCode', {
-                  rules: [
-                    {
-                      required: true,
-                      message: formatMessage({ id: 'validation.activeCode.required' }),
-                    },
-                  ],
-                })(
-                  <Input
-                    size="large"
-                    placeholder={formatMessage({ id: 'form.active-code.placeholder' })}
-                  />
-                )}
-              </Col>
-            </Row>
-          </FormItem>
-          <FormItem>
-            {getFieldDecorator('loginName', {
-              rules: [
-                {
-                  required: true,
-                  message: formatMessage({ id: 'validation.userName.required' }),
-                },
-              ],
-            })(
-              <Input size="large" onBlur={this.checkLoginName} placeholder={formatMessage({ id: 'form.username.placeholder' })} />
+              <Input size="large" placeholder={formatMessage({ id: 'form.email.placeholder' })} />
             )}
           </FormItem>
           <FormItem help={help}>
@@ -281,10 +248,72 @@ class Register extends Component {
                 size="large"
                 type="password"
                 placeholder={formatMessage({ id: 'form.confirm-password.placeholder' })}
-                onPressEnter = {this.handleSubmit}
               />
             )}
           </FormItem>
+          <FormItem>
+            <Row gutter={8}>
+              <Col span={16}>
+                {getFieldDecorator('restCode', {
+                  rules: [
+                    {
+                      required: true,
+                      message: formatMessage({ id: 'validation.verification-code.required' }),
+                    },
+                  ],
+                })(
+                  <Input
+                    size="large"
+                    placeholder={formatMessage({ id: 'form.verification-code.placeholder' })}
+                  />
+                )}
+              </Col>
+              <Col span={8}>
+                <Button
+                  size="large"
+                  disabled={count}
+                  className={styles.getCaptcha}
+                  onClick={this.onGetCaptcha}
+                >
+                  {count
+                    ? `${count} s`
+                    : formatMessage({ id: 'app.register.get-verification-code' })}
+                </Button>
+              </Col>
+            </Row>
+          </FormItem>
+          {/* <FormItem>
+            <InputGroup compact>
+              <Select
+                size="large"
+                value={prefix}
+                onChange={this.changePrefix}
+                style={{ width: '20%' }}
+              >
+                <Option value="86">+86</Option>
+                <Option value="87">+87</Option>
+              </Select>
+              {getFieldDecorator('mobile', {
+                rules: [
+                  {
+                    required: true,
+                    message: formatMessage({ id: 'validation.phone-number.required' }),
+                  },
+                  {
+                    pattern: /^\d{11}$/,
+                    message: formatMessage({ id: 'validation.phone-number.wrong-format' }),
+                  },
+                ],
+              })(
+                <Input
+                  size="large"
+                  style={{ width: '80%' }}
+                  placeholder={formatMessage({ id: 'form.phone-number.placeholder' })}
+                />
+              )}
+            </InputGroup>
+          </FormItem> */}
+          
           <FormItem>
             <Button
               size="large"
@@ -293,7 +322,7 @@ class Register extends Component {
               type="primary"
               htmlType="submit"
             >
-              <FormattedMessage id="app.login.activation" />
+              <FormattedMessage id="app.forgot.recover-password" />
             </Button>
             <Link className={styles.login} to="/User/Login">
               <FormattedMessage id="app.register.sign-in" />
@@ -305,4 +334,4 @@ class Register extends Component {
   }
 }
 
-export default Register;
+export default ForgotPassword;

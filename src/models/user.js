@@ -1,4 +1,4 @@
-import { query as queryUsers, queryCurrent } from '@/services/user';
+import { query as queryUsers, queryCurrent ,querySupplierInfo} from '@/services/user';
 
 export default {
   namespace: 'user',
@@ -6,6 +6,7 @@ export default {
   state: {
     list: [],
     currentUser: {},
+    supplierInfo:{},
   },
 
   effects: {
@@ -15,6 +16,16 @@ export default {
         type: 'save',
         payload: response,
       });
+    },
+    *querySupplierInfo(_,{call,put}){
+      const  response = yield call(querySupplierInfo);
+      if(response.code == 0){
+        yield put({
+          type:'saveQuerySupplierInfo',
+          payload: response.workBench,
+        })
+      }
+      
     },
     *fetchCurrent(_, { call, put }) {
       const response = yield call(queryCurrent);
@@ -37,6 +48,12 @@ export default {
         ...state,
         currentUser: action.payload || {},
       };
+    },
+    saveQuerySupplierInfo(state,action){
+      return {
+        ...state,
+        supplierInfo: action.payload || {},
+      }
     },
     changeNotifyCount(state, action) {
       return {

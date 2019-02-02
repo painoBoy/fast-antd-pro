@@ -8,6 +8,7 @@ import styles from './Center.less';
 
 @connect(({ loading, user, project }) => ({
   listLoading: loading.effects['list/fetch'],
+  supplierInfo:user.supplierInfo,
   currentUser: user.currentUser,
   currentUserLoading: loading.effects['user/fetchCurrent'],
   project,
@@ -82,6 +83,7 @@ class Center extends PureComponent {
   render() {
     const { newTags, inputVisible, inputValue } = this.state;
     const {
+      supplierInfo,
       listLoading,
       currentUser,
       currentUserLoading,
@@ -91,7 +93,6 @@ class Center extends PureComponent {
       location,
       children,
     } = this.props;
-
     const operationTabList = [
       {
         key: 'articles',
@@ -124,7 +125,7 @@ class Center extends PureComponent {
         <Row gutter={24}>
           <Col lg={7} md={24}>
             <Card bordered={false} style={{ marginBottom: 24 }} loading={currentUserLoading}>
-              {currentUser && Object.keys(currentUser).length ? (
+              {supplierInfo && Object.keys(supplierInfo).length ? (
                 <div>
                   <div className={styles.avatarHolder}>
                     <img alt="" src={currentUser.avatar} />

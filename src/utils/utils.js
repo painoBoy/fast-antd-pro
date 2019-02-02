@@ -7,6 +7,34 @@ export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;
 }
 
+//打印
+export function printTables(ele) {
+ 
+  var dom = document.getElementById(ele);
+
+  var iframe = document.createElement('IFRAME');
+  var doc = null;
+  iframe.setAttribute('style', 'position:absolute;left:-500px;top:-500px;');
+  document.body.appendChild(iframe);
+  doc = iframe.contentWindow.document;
+  doc.write(`<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.12.4/antd.css" />`);
+  doc.write('<div>' + dom.innerHTML + '</div>');
+  iframe.contentWindow.focus();
+
+  setTimeout(()=>{
+    iframe.contentWindow.print();
+  },280)   
+
+
+  doc.close();
+
+  if (navigator.userAgent.indexOf("MSIE") > 0)
+  {
+      document.body.removeChild(iframe);
+  }
+
+}
+
 export function getTimeDistance(type) {
   const now = new Date();
   const oneDay = 1000 * 60 * 60 * 24;
@@ -15,7 +43,9 @@ export function getTimeDistance(type) {
     now.setHours(0);
     now.setMinutes(0);
     now.setSeconds(0);
-    return [moment(now), moment(now.getTime() + (oneDay - 1000))];
+    const begin = moment(now).format('YYYY-MM-DD HH:mm:ss');
+    const end   = moment(now.getTime() + (oneDay - 1000)).format('YYYY-MM-DD HH:mm:ss');
+    return begin+','+ end;
   }
 
   if (type === 'week') {
@@ -31,8 +61,9 @@ export function getTimeDistance(type) {
     }
 
     const beginTime = now.getTime() - day * oneDay;
-
-    return [moment(beginTime), moment(beginTime + (7 * oneDay - 1000))];
+    const begin = moment(beginTime).format('YYYY-MM-DD HH:mm:ss');
+    const end   = moment(beginTime + (7 * oneDay - 1000)).format('YYYY-MM-DD HH:mm:ss');
+    return begin+','+end;
   }
 
   if (type === 'month') {
@@ -41,11 +72,13 @@ export function getTimeDistance(type) {
     const nextDate = moment(now).add(1, 'months');
     const nextYear = nextDate.year();
     const nextMonth = nextDate.month();
+    const begin = moment(`${year}-${fixedZero(month + 1)}-01`).format('YYYY-MM-DD HH:mm:ss');
+    const end = moment(moment(`${nextYear}-${fixedZero(nextMonth + 1)}-01`).valueOf() - 1000).format('YYYY-MM-DD HH:mm:ss');
+    return begin +','+ end;
+  }
 
-    return [
-      moment(`${year}-${fixedZero(month + 1)}-01 00:00:00`),
-      moment(moment(`${nextYear}-${fixedZero(nextMonth + 1)}-01 00:00:00`).valueOf() - 1000),
-    ];
+  if(type === 'all'){
+    return '';
   }
 
   const year = now.getFullYear();
@@ -130,6 +163,44 @@ export function getRoutes(path, routerData) {
   });
   return renderRoutes;
 }
+
+export function getQueryString(url) { 
+  var theRequest = new Object();  
+   if (url.indexOf("?") != -1) {  
+      var str = url.substr(1);  
+      strs = str.split("&");  
+      for(var i = 0; i < strs.length; i ++) {  
+         theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);  
+      }  
+   }  
+   return theRequest;  
+} 
+
+//设置cookie
+export function setCookie(name,value,expiredays) { 
+    //设置名称为name,值为value的Cookie
+    var exdate=new Date();
+    　　exdate.setDate(exdate.getDate() + expiredays);
+    　　document.cookie=name+ "=" + escape(value) + ((expiredays==null) ? "" : ";expires="+exdate.toGMTString()+'path=/');
+} 
+
+//获取cookies 
+export function getCookie(name) { 
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+ if(arr=document.cookie.match(reg))
+  return unescape(arr[2]); 
+    else 
+  return null; 
+} 
+
+//删除cookies 
+export function delCookie(name) { 
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null)
+        document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+} 
 
 export function getPageQuery() {
   return parse(window.location.href.split('?')[1]);

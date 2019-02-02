@@ -12,10 +12,14 @@ export default [
         component: './User/Login'
       },
       {
+        path: '/user/forgotpassword',
+        component: './User/ForgotPassword'
+      },
+      {
         path: '/user/register',
         component: './User/Register'
       },
-      {
+      { 
         path: '/user/register-result',
         component: './User/RegisterResult'
       },
@@ -25,8 +29,6 @@ export default [
   {
     path: '/',
     component: '../layouts/BasicLayout',
-    Routes: ['src/pages/Authorized'],
-    authority: ['admin', 'user'],
     routes: [
       // dashboard
        {
@@ -39,9 +41,47 @@ export default [
         component:'/Dashboard/Workplace'
       },
       {
-        path: '/MyOrder/MyOrder',
+        path: '/Order/MyOrder',
         name: 'MyOrder',
-        component: './MyOrder/MyOrder'
+        component: './Order/MyOrder/MyOrder',
+        routes: [{
+          path: '/Order/MyOrder',
+          redirect: '/Order/MyOrder/ConfimOrder?orderState=W',
+        },
+        {
+          path: '/Order/MyOrder/ConfimOrder',
+          component: './Order/MyOrder/ConfimOrder',
+        },
+        {
+          path: '/Order/MyOrder/BackOrder',
+          component: './Order/MyOrder/BackOrder',
+        },
+        {
+          path: '/Order/MyOrder/ReceivedOrder',
+          component: './Order/MyOrder/ReceivedOrder',
+        },
+        {
+          path: '/order/myorder/completeorder',
+          component: './Order/MyOrder/CompleteOrder',
+        },
+        {
+          path: '/order/myorder/orderdetail',
+          component: './Order/MyOrder/OrderDetail/OrderDetail',
+        },
+        {
+          path: '/order/myorder/deliverdetail',
+          component: './Order/MyOrder/OrderDetail/DeliverDetail',
+        },
+        {
+          path: '/order/myorder/viewdetail',
+          component: './Order/MyOrder/OrderDetail/ViewDetail',
+        },
+        {
+          path: '/order/myorder/allorderdetail',
+          component: './Order/MyOrder/OrderDetail/AllOrderDetail',
+        },
+      ],
+ 
       },
       {
         path: '/DisManage/DisManage',
@@ -87,7 +127,7 @@ export default [
           {
             path: '/form/advanced-form',
             name: 'advancedform',
-            authority: ['admin'],
+            // authority: ['admin'],
             component: './Forms/AdvancedForm',
           },
         ],
@@ -153,58 +193,63 @@ export default [
           {
             path: '/profile/advanced',
             name: 'advanced',
-            authority: ['admin'],
             component: './Profile/AdvancedProfile',
           },
         ],
       },
-      // {
-      //   name: 'result',
-      //   icon: 'check-circle-o',
-      //   path: '/result',
-      //   routes: [
-      //     // result
-      //     {
-      //       path: '/result/success',
-      //       name: 'success',
-      //       component: './Result/Success',
-      //     },
-      //     {
-      //       path: '/result/fail',
-      //       name: 'fail',
-      //       component: './Result/Error'
-      //     },
-      //   ],
-      // },
-      // {
-      //   name: 'exception',
-      //   icon: 'warning',
-      //   path: '/exception',
-      //   routes: [
-      //     // exception
-      //     {
-      //       path: '/exception/403',
-      //       name: 'not-permission',
-      //       component: './Exception/403',
-      //     },
-      //     {
-      //       path: '/exception/404',
-      //       name: 'not-find',
-      //       component: './Exception/404',
-      //     },
-      //     {
-      //       path: '/exception/500',
-      //       name: 'server-error',
-      //       component: './Exception/500',
-      //     },
-      //     {
-      //       path: '/exception/trigger',
-      //       name: 'trigger',
-      //       hideInMenu: true,
-      //       component: './Exception/TriggerException',
-      //     },
-      //   ],
-      // },
+      {
+        name: 'result',
+        icon: 'check-circle-o',
+        path: '/result',
+        hideInMenu: true,
+        routes: [
+          // result
+          {
+            path: '/result/success',
+            name: 'success',
+            hideInMenu: true,
+            component: './Result/Success',
+          },
+          {
+            path: '/result/fail',
+            name: 'fail',
+            hideInMenu: true,
+            component: './Result/Error'
+          },
+        ],
+      },
+      {
+        name: 'exception',
+        icon: 'warning',
+        hideInMenu: true,
+        path: '/exception',
+        routes: [
+          // exception
+          {
+            path: '/exception/403',
+            name: 'not-permission',
+            hideInMenu: true,
+            component: './Exception/403',
+          },
+          {
+            path: '/exception/404',
+            name: 'not-find',
+            hideInMenu: true,
+            component: './Exception/404',
+          },
+          {
+            path: '/exception/500',
+            name: 'server-error',
+            component: './Exception/500',
+          },
+          {
+            path: '/exception/trigger',
+            name: 'trigger',
+            hideInMenu: true,
+            component: './Exception/TriggerException',
+          },
+        ],
+      },
       {
         name: 'account',
         icon: 'user',

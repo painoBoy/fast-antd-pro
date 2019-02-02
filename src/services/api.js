@@ -104,24 +104,44 @@ export async function updateFakeList(params) {
 }
 //获取图片验证码
 export async function getFakeCaptcha(params) {
-  return request('/api/captcha.jpg', {
-    method: 'GET',
-    body: params,
-  });
+  return request(`/cneiu-fk/captcha.jpg?${stringify(params)}`);
 }
 //登陆请求
 export async function fakeAccountLogin(params) {
-  return request('/api/sys/login', {
+  return request('/cneiu-fk/sys/login', {
+    method: 'POST',
+    body: params,
+  });
+}
+//激活账号 -> 邮箱验证
+export async function validateEmial(params) {
+  return request(`/cneiu-fk/sys/account/valid?${stringify(params)}`);
+}
+
+//激活账号 -> 用户名是否存在
+export async function validateLoginName(params) {
+  return request(`/cneiu-fk/sys/account/checkLoginName?${stringify(params)}`);
+}
+
+//激活账号
+export async function activeAccount(params) {
+  return request('/cneiu-fk/sys/account/active', {
     method: 'POST',
     body: params,
   });
 }
 
-export async function fakeRegister(params) {
-  return request('/api/register', {
+//找回密码
+export async function resetPassword(params) {
+  return request('/cneiu-fk/sys/account/restPassWord', {
     method: 'POST',
     body: params,
   });
+}
+
+//找回密码 -> 获取邮箱验证
+export async function getRestCode(params) {
+  return request(`/cneiu-fk/sys/account/getRestCode?${stringify(params)}`);
 }
 
 export async function queryNotices() {
